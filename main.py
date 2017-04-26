@@ -43,7 +43,6 @@ while True:
             print(current_data)
             data_array.append(current_data)
             f.write(json.dumps({'data': data_array}))
-            f.close()
 
     except Exception as e:
         raise e
