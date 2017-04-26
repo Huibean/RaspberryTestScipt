@@ -27,6 +27,18 @@ nat_net_streaming_client = NatNetClient(nat_net_controller)
 nat_net_streaming_client.newFrameListener = NatNetController.receiveNewFrame
 nat_net_streaming_client.rigidBodyListener = NatNetController.receiveRigidBodyFrame
 
+json_path = os.path.join(os.getcwd(), datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S.json"))
+
+def record_data():
+    while True:
+        with open(json_path, "w+") as f:
+            f.write(json.dumps({'data': data_array}))
+
+        print("记录存档")
+        time.sleep(1)
+
+record_dataThread = Thread( target = record_data, args = ())
+record_dataThread.start()
 
 receive_stop = Event()
 receive_dataThread = Thread( target = serialData.receive, args = (serial_connection, serial_client, receive_stop))
@@ -34,23 +46,17 @@ receive_dataThread = Thread( target = serialData.receive, args = (serial_connect
 nat_net_streaming_client.run()
 receive_dataThread.start()
 
-json_path = os.path.join(os.getcwd(), datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S.json"))
-
-i = 0
+print("开始")
 while True:
     try:
         current_data = [serial_client.buffer_data, nat_net_controller.positions_buffer, nat_net_controller.rotations_buffer, datetime.datetime.now().strftime("%H:%M:%S.%f")]
         data_array.append(current_data)
-        if i > 500:
-            print(current_data)
-            with open(json_path, "w+") as f:
-                f.write(json.dumps({'data': data_array}))
-            i = 0
+        with open(json_path, "w+") as f:
+            f.write(json.dumps({'data': data_array}))
 
     except Exception as e:
         raise e
 
-    i += 1
     time.sleep(0.01)
 
 print("close all threads")
