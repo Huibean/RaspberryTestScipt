@@ -18,18 +18,6 @@ class NatNetController(object):
         self.last_update_buffer_id = 1
 
     @staticmethod
-    def store_data(controller, store_data_stop):
-        while not store_data_stop.is_set():
-            if controller.send:
-                print("store data")
-                for id in controller.positions_buffer.keys():
-                    if id in controller.data.keys():
-                        controller.data[id].append([*controller.positions_buffer[id], *controller.rotations_buffer[id]]) 
-                    else:
-                        controller.data[id] = []
-                time.sleep(0.01)
-
-    @staticmethod
     def receiveNewFrame( frameNumber, markerSetCount, unlabeledMarkersCount, rigidBodyCount, skeletonCount,
                         labeledMarkerCount, latency, timecode, timecodeSub, timestamp, isRecording, trackedModelsChanged ):
         #  print( "Received frame", frameNumber )
