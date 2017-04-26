@@ -8,6 +8,7 @@ import datetime
 import platform
 import json
 import os
+import sys
 
 if platform.system() == 'Darwin':
     serial_connection = serial.Serial('/dev/cu.SLAB_USBtoUART', '38400', timeout = 0.02, writeTimeout = 0)
@@ -29,8 +30,8 @@ nat_net_streaming_client.rigidBodyListener = NatNetController.receiveRigidBodyFr
 
 json_path = os.path.join(os.getcwd(), datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S.json"))
 
-def record_data():
-    while True:
+def record_data(record_stop):
+    while not record_stop.is_set():
         try:
             with open(json_path, "w+") as f:
                 f.write(json.dumps({'data': data_array}))
@@ -39,29 +40,41 @@ def record_data():
         except Exception as e:
             raise e
 
-
-record_dataThread = Thread( target = record_data, args = ())
-record_dataThread.start()
+record_stop = Event()
+record_dataThread = Thread( target = record_data, args = (record_stop,))
 
 receive_stop = Event()
 receive_dataThread = Thread( target = serialData.receive, args = (serial_connection, serial_client, receive_stop))
 
+record_dataThread.start()
 nat_net_streaming_client.run()
 receive_dataThread.start()
 
-i = 0
-print("开始")
-while True:
-    try:
-        current_data = [serial_client.buffer_data, nat_net_controller.positions_buffer, nat_net_controller.rotations_buffer, datetime.datetime.now().strftime("%H:%M:%S.%f")]
-        data_array.append(current_data)
-        if i > 100:
-            print(current_data)
-            i = 0
-        time.sleep(0.01)
-        i += 1
-    except Exception as e:
-        raise e
 
-print("close all threads")
-nat_net_streaming_client.stop()
+def handle_data(handle_data_stop):
+    i = 0
+    print("开始")
+    while not handle_data_stop.is_set():
+        try:
+            current_data = [serial_client.buffer_data, nat_net_controller.positions_buffer, nat_net_controller.rotations_buffer, datetime.datetime.now().strftime("%H:%M:%S.%f")]
+            data_array.append(current_data)
+            if i > 100:
+                print(current_data)
+                i = 0
+            time.sleep(0.01)
+            i += 1
+        except Exception as e:
+            raise e
+
+handle_data_stop = Event()
+handle_dataThread = Thread( target = handle_data, args = (handle_data_stop,))
+handle_dataThread.start()
+
+def stop():
+    record_stop.set()
+    handle_data_stop.set()
+    receive_stop.set()
+    nat_net_streaming_client.stop()
+    print("close all threads")
+
+#  sys.exit(stop())
