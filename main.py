@@ -36,17 +36,21 @@ receive_dataThread.start()
 
 json_path = os.path.join(os.getcwd(), datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S.json"))
 
+i = 0
 while True:
     try:
         current_data = [serial_client.buffer_data, nat_net_controller.positions_buffer, nat_net_controller.rotations_buffer, datetime.datetime.now().strftime("%H:%M:%S.%f")]
         data_array.append(current_data)
-        print(current_data)
-        with open(json_path, "w+") as f:
-            f.write(json.dumps({'data': data_array}))
+        if i > 500:
+            print(current_data)
+            with open(json_path, "w+") as f:
+                f.write(json.dumps({'data': data_array}))
+            i = 0
 
     except Exception as e:
         raise e
 
+    i += 1
     time.sleep(0.01)
 
 print("close all threads")
