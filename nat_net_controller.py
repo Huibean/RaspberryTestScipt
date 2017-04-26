@@ -25,7 +25,7 @@ class NatNetController(object):
 
     @staticmethod
     def receiveRigidBodyFrame( controller, id, position, rotation ):
-        print( "Received frame for rigid body", id )
+        #  print( "Received frame for rigid body", id )
         #print( "position: ", position )
         #print( "rotation: ", rotation )
         current_position = position

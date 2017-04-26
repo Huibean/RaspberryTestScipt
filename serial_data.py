@@ -31,5 +31,4 @@ class serialData(object):
             else:
                 self.buffer = ''
         except Exception as e:
-            print(byte)
             self.buffer = ''
