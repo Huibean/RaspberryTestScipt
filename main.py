@@ -31,7 +31,7 @@ json_path = os.path.join(os.getcwd(), datetime.datetime.now().strftime("%Y-%m-%d
 
 def record_data():
     while True:
-        with open(json_path, "r+") as f:
+        with open(json_path, "w+") as f:
             f.write(json.dumps({'data': data_array}))
 
         print("记录存档")
