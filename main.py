@@ -35,21 +35,15 @@ nat_net_streaming_client.run()
 receive_dataThread.start()
 
 json_path = os.path.join(os.getcwd(), datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S.json"))
-try:
-    with open(json_path, "w+") as f:
-        f.write(json.dumps({'data': []}))
-except Exception as e:
-    raise e
 
 while True:
     try:
         with open(json_path, "w+") as f:
             current_data = [serial_client.buffer_data, nat_net_controller.positions_buffer, nat_net_controller.rotations_buffer, datetime.datetime.now().strftime("%H:%M:%S.%f")]
-            print(serial_client.buffer_data)
-            print(nat_net_controller.positions_buffer)
-            print(nat_net_controller.rotations_buffer)
+            print(current_data)
             data_array.append(current_data)
             f.write(json.dumps({'data': data_array}))
+            f.close()
 
     except Exception as e:
         raise e
