@@ -1,0 +1,9 @@
+from NatNetClient import NatNetClient
+from nat_net_controller import NatNetController
+
+nat_net_controller = NatNetController()
+nat_net_streaming_client = NatNetClient(nat_net_controller)
+nat_net_streaming_client.newFrameListener = NatNetController.receiveNewFrame
+nat_net_streaming_client.rigidBodyListener = NatNetController.receiveRigidBodyFrame
+
+nat_net_streaming_client.run()
