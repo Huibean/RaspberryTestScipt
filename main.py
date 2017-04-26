@@ -31,7 +31,7 @@ json_path = os.path.join(os.getcwd(), datetime.datetime.now().strftime("%Y-%m-%d
 
 def record_data():
     while True:
-        with open(json_path, "w+") as f:
+        with open(json_path, "r+") as f:
             f.write(json.dumps({'data': data_array}))
 
         print("记录存档")
@@ -51,8 +51,6 @@ while True:
     try:
         current_data = [serial_client.buffer_data, nat_net_controller.positions_buffer, nat_net_controller.rotations_buffer, datetime.datetime.now().strftime("%H:%M:%S.%f")]
         data_array.append(current_data)
-        with open(json_path, "w+") as f:
-            f.write(json.dumps({'data': data_array}))
 
     except Exception as e:
         raise e
