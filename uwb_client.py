@@ -37,22 +37,24 @@ class UwbClient(object):
     def handle_bytes(self, byte):
         try:
             data = codecs.encode(byte, 'hex_codec').decode()
-            print(data)
             if data == '59':
                 self.buffer.append(data)
-            elif len(self.buffer) > 0 and self.buffer[0] == '59' and data != '47':
-                self.buffer.append(data)
-            elif len(self.buffer) > 0 and data == '47':
-                self.buffer.append(data)
-                if len(self.buffer) == int(self.buffer[1] + self.buffer[2], base=16):
-                    current_data = self.buffer[-11:-5]
-                    self.buffer_data = [handle_hex(current_data[1] + current_data[0]),
-                                        handle_hex(current_data[3] + current_data[2]),
-                                        handle_hex(current_data[5] + current_data[4])] 
-                    self.index += 1
+            elif len(self.buffer) > 0:
+                if data != '47':
+                    self.buffer.append(data)
+                    pass
+                else:
+                    self.buffer.append(data)
+                    if len(self.buffer) == int(self.buffer[1] + self.buffer[2], base=16):
+                        current_data = self.buffer[-11:-5]
+                        self.buffer_data = [handle_hex(current_data[1] + current_data[0]),
+                                            handle_hex(current_data[3] + current_data[2]),
+                                            handle_hex(current_data[5] + current_data[4])] 
+                        self.index += 1
                     self.buffer = []
             else:
                 self.buffer = []
+            print(self.buffer)
         except Exception as e:
             self.buffer = []
             raise e
