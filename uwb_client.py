@@ -22,7 +22,7 @@ class UwbClient(object):
         self.data = []
         self.buffer_data = []
         self.index = 0
-        self.buffer = ''
+        self.buffer = []
 
     @staticmethod
     def receive(serial_connection, serial_data, stop_event):
@@ -34,11 +34,8 @@ class UwbClient(object):
                     raise e
 
     def handle_bytes(self, byte):
-        print("handle bytes")
-        print(byte)
         try:
             data = byte.hex()
-            print(data)
             if data == '59':
                 self.buffer.append(data)
             elif self.buffer[0] == '59' and data != '47':
@@ -51,8 +48,9 @@ class UwbClient(object):
                                         handle_hex(current_data[3] + current_data[2]),
                                         handle_hex(current_data[5] + current_data[4])] 
                     self.index += 1
-                    self.buffer = ''
+                    self.buffer = []
             else:
-                self.buffer = ''
+                self.buffer = []
         except Exception as e:
-            self.buffer = ''
+            self.buffer = []
+            raise e
