@@ -37,6 +37,7 @@ class UwbClient(object):
     def handle_bytes(self, byte):
         try:
             data = codecs.encode(byte, 'hex_codec').decode()
+            print(data)
             if data == '59':
                 self.buffer.append(data)
             elif len(self.buffer) > 0 and self.buffer[0] == '59' and data != '47':
