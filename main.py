@@ -62,7 +62,6 @@ def handle_data(handle_data_stop):
             if i > 100:
                 print(current_data)
                 i = 0
-            time.sleep(0.01)
             i += 1
         except Exception as e:
             raise e
