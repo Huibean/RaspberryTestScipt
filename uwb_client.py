@@ -12,9 +12,9 @@ def handle_hex(hex_str):
     original_int = int(hex_str, base=16)
     binary = bin(original_int - 1).zfill(16)
     if binary[2:][0] == '1':
-        return int(take_opposite(binary[2:]), 2) * -1
+        return (int(take_opposite(binary[2:]), 2) * -1) / 100
     else:
-        return original_int
+        return original_int / 100
     
 
 class UwbClient(object):
