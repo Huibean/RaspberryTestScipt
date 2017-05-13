@@ -1,3 +1,4 @@
+import codecs
 def take_opposite(binary):
     new_binary = ''
     for b in binary:
@@ -35,7 +36,7 @@ class UwbClient(object):
 
     def handle_bytes(self, byte):
         try:
-            data = byte.hex()
+            data = codecs.encode(byte, 'hex_codec').decode()
             if data == '59':
                 self.buffer.append(data)
             elif self.buffer[0] == '59' and data != '47':

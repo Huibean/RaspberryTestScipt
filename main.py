@@ -62,7 +62,7 @@ def handle_data(handle_data_stop):
         try:
             current_data = [serial_client.buffer_data, nat_net_controller.positions_buffer, nat_net_controller.rotations_buffer, datetime.datetime.now().strftime("%H:%M:%S.%f")]
             data_array.append(current_data)
-            if i > 100:
+            if i > 10000:
                 print(current_data)
                 i = 0
             i += 1
