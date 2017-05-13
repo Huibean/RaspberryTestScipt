@@ -39,9 +39,9 @@ class UwbClient(object):
             data = codecs.encode(byte, 'hex_codec').decode()
             if data == '59':
                 self.buffer.append(data)
-            elif self.buffer[0] == '59' and data != '47':
+            elif len(self.buffer) > 0 and self.buffer[0] == '59' and data != '47':
                 self.buffer.append(data)
-            elif data == '47':
+            elif len(self.buffer) > 0 and data == '47':
                 self.buffer.append(data)
                 if len(self.buffer) == int(self.buffer[1] + self.buffer[2], base=16):
                     current_data = self.buffer[-11:-5]
