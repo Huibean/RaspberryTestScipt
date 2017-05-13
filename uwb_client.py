@@ -36,6 +36,7 @@ class UwbClient(object):
     def handle_bytes(self, byte):
         try:
             data = byte.hex()
+            print(data)
             if data == '59':
                 self.buffer.append(data)
             elif self.buffer[0] == '59' and data != '47':
