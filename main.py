@@ -18,6 +18,8 @@ elif platform.system() == 'Linux':
 else:
     print("无法识别系统!")
 
+print(serial_connection.read())
+
 data_array = []
 
 serial_connection.flushInput()

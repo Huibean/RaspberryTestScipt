@@ -27,7 +27,6 @@ class UwbClient(object):
     @staticmethod
     def receive(serial_connection, serial_data, stop_event):
         while (not stop_event.is_set()):
-            print("uwb test")
             if serial_connection.isOpen():
                 try:
                     serial_data.handle_bytes(serial_connection.read())
