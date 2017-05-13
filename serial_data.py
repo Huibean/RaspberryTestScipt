@@ -5,7 +5,7 @@ class serialData(object):
         self.data = []
         self.buffer_data = []
         self.index = 0
-        self.buffer = ''
+        self.buffer = []
 
     @staticmethod
     def receive(serial_connection, serial_data, stop_event):

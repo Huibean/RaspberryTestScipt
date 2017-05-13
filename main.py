@@ -2,6 +2,7 @@ from NatNetClient import NatNetClient
 from nat_net_controller import NatNetController
 import serial
 from serial_data import serialData
+from uwb_client import UwbClient
 from threading import Thread, Event
 import time
 import datetime
@@ -11,9 +12,9 @@ import os
 import sys
 
 if platform.system() == 'Darwin':
-    serial_connection = serial.Serial('/dev/cu.SLAB_USBtoUART', '38400', timeout = 0.02, writeTimeout = 0)
+    serial_connection = serial.Serial('/dev/cu.SLAB_USBtoUART', '38400', timeout = 0.1, writeTimeout = 0)
 elif platform.system() == 'Linux':
-    serial_connection = serial.Serial('/dev/ttyAMA0', '38400', timeout = 0.02, writeTimeout = 0)
+    serial_connection = serial.Serial('/dev/ttyAMA0', '115200', timeout = 0.1, writeTimeout = 0)
 else:
     print("无法识别系统!")
 
@@ -21,7 +22,8 @@ data_array = []
 
 serial_connection.flushInput()
 
-serial_client = serialData()
+#  serial_client = serialData()
+serial_client = UwbClient()
 
 nat_net_controller = NatNetController()
 nat_net_streaming_client = NatNetClient(nat_net_controller)
@@ -49,7 +51,6 @@ receive_dataThread = Thread( target = serialData.receive, args = (serial_connect
 record_dataThread.start()
 nat_net_streaming_client.run()
 receive_dataThread.start()
-
 
 def handle_data(handle_data_stop):
     i = 0
