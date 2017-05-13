@@ -46,7 +46,8 @@ record_stop = Event()
 record_dataThread = Thread( target = record_data, args = (record_stop,))
 
 receive_stop = Event()
-receive_dataThread = Thread( target = serialData.receive, args = (serial_connection, serial_client, receive_stop))
+#  receive_dataThread = Thread( target = serialData.receive, args = (serial_connection, serial_client, receive_stop))
+receive_dataThread = Thread( target = UwbClient.receive, args = (serial_connection, serial_client, receive_stop))
 
 record_dataThread.start()
 nat_net_streaming_client.run()
