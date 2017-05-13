@@ -35,6 +35,7 @@ class UwbClient(object):
 
     def handle_bytes(self, byte):
         print("handle bytes")
+        print(byte)
         try:
             data = byte.hex()
             print(data)
