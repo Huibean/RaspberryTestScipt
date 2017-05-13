@@ -40,12 +40,10 @@ class UwbClient(object):
             if data == '59':
                 self.buffer.append(data)
             elif len(self.buffer) > 0:
-                if data != '47':
-                    self.buffer.append(data)
-                    pass
-                else:
-                    self.buffer.append(data)
-                    if len(self.buffer) == int(self.buffer[1] + self.buffer[2], base=16):
+                self.buffer.append(data)
+                print(self.buffer_data)
+                if data == '47':
+                    if len(self.buffer) == int(self.buffer[2] + self.buffer[1], base=16):
                         current_data = self.buffer[-11:-5]
                         self.buffer_data = [handle_hex(current_data[1] + current_data[0]),
                                             handle_hex(current_data[3] + current_data[2]),
@@ -54,7 +52,6 @@ class UwbClient(object):
                     self.buffer = []
             else:
                 self.buffer = []
-            print(self.buffer)
         except Exception as e:
             self.buffer = []
             raise e
