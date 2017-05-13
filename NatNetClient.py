@@ -19,7 +19,7 @@ class NatNetClient:
         self.receive_stop = False
 
         # Change this value to the IP address of the NatNet server.
-        self.serverIPAddress = "192.168.0.134"#"127.0.0.1"
+        self.serverIPAddress = "192.168.1.111"#"127.0.0.1"
 
         # This should match the multicast address listed in Motive's streaming settings.
         self.multicastAddress = "239.255.42.99"
