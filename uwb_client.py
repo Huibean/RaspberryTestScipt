@@ -41,7 +41,6 @@ class UwbClient(object):
                 self.buffer.append(data)
             elif len(self.buffer) > 0:
                 self.buffer.append(data)
-                print(self.buffer_data)
                 if data == '47':
                     if len(self.buffer) == int(self.buffer[2] + self.buffer[1], base=16):
                         current_data = self.buffer[-11:-5]
