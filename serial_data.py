@@ -17,7 +17,6 @@ class serialData(object):
                     raise e
 
     def handle_bytes(self, byte):
-        print("handle bytes")
         try:
             data = byte.decode()
             if re.match('\d|\.|\,|-', data):
